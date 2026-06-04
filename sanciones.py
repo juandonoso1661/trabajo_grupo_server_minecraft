@@ -7,32 +7,33 @@ class sanciones:
     def verificar_regla(self, usuario, regla_infringida):
         if regla_infringida == "NO USAR HACKS":
             return sanciones(usuario.id_usuario,
-            "Ban"
+            "Ban",
             "por 3 semanas"
             )
         
         elif regla_infringida == "NO INSULTOS EN EL CHAT":
             return sanciones(usuario.id_usuario,
-            "Mute" 
+            "Mute", 
             "por 2 dias"
             )
         
         elif regla_infringida == "NO HACER SPAM":
             return sanciones(usuario.id_usuario,
-            "Mute"
+            "Mute",
             "por 1 dia"
             )
         
         elif regla_infringida == "NO SOBREEXPLOTAR MODS":
             return sanciones(usuario.id_usuario,
-            "Ban"
+            "Ban",
             "por 3 dias"
             )
+        return None
 
     def mostrar_sancion(self):
         print(
-            f"Este usuario/os ha sido baneado:"
-            f"ID usuario: {self.id_usuario}"
-            f"Sanción: {self.tipo_sanciones}"
-            f"Duración: {self.duracion}")
-       
+            f"Este usuario/os ha sido baneado\n:"
+            f"ID usuario: {self.id_usuario}\n"
+            f"Sanción: {self.tipo_sanciones}\n"
+            f"Duración: {self.duracion}"
+            )
