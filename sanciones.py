@@ -1,4 +1,4 @@
-class sanciones:
+class Sanciones:
     def __init__(self, id_usuario, tipo_sanciones, duracion):
         self.id_usuario = id_usuario
         self.tipo_sanciones = tipo_sanciones
@@ -6,25 +6,25 @@ class sanciones:
 
     def verificar_regla(self, usuario, regla_infringida):
         if regla_infringida == "NO USAR HACKS":
-            return sanciones(usuario.id_usuario,
+            return Sanciones(usuario.id_usuario,
             "Ban",
             "por 3 semanas"
             )
         
         elif regla_infringida == "NO INSULTOS EN EL CHAT":
-            return sanciones(usuario.id_usuario,
+            return Sanciones(usuario.id_usuario,
             "Mute", 
             "por 2 dias"
             )
         
         elif regla_infringida == "NO HACER SPAM":
-            return sanciones(usuario.id_usuario,
+            return Sanciones(usuario.id_usuario,
             "Mute",
             "por 1 dia"
             )
         
         elif regla_infringida == "NO SOBREEXPLOTAR MODS":
-            return sanciones(usuario.id_usuario,
+            return Sanciones(usuario.id_usuario,
             "Ban",
             "por 3 dias"
             )

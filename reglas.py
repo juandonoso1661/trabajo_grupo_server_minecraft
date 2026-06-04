@@ -1,4 +1,4 @@
-class reglas:
+class Reglas:
     def __init__(self, id_reglas, nombre_reglas, tipo_reglas):
         self.id_regla = id_reglas
         self.nombre_reglas = nombre_reglas
@@ -9,7 +9,14 @@ class reglas:
         print(f"Nombre: {self.nombre_reglas}")
         print(f"Tipo de regla: {self.tipo_de_reglas}")
 
-regla1 = reglas(1, "NO USAR HACKS", "seguridad")
-regla2 = reglas(2, "NO INSULTOS EN EL CHAT", "convivencia")
-regla3 = reglas(3, "NO SOBREEXPLOTAR MODS", "seguridad")
-regla4 = reglas(4, "NO HACER SPAM", "chat")
+regla1 = Reglas(1, "NO USAR HACKS", "seguridad")
+regla2 = Reglas(2, "NO INSULTOS EN EL CHAT", "convivencia")
+regla3 = Reglas(3, "NO SOBREEXPLOTAR MODS", "seguridad")
+regla4 = Reglas(4, "NO HACER SPAM", "chat")
+
+print("=== LISTA DE USUARIOS ===")
+regla1.mostrar_regla()
+regla2.mostrar_regla()
+regla3.mostrar_regla()
+regla4.mostrar_regla()
+

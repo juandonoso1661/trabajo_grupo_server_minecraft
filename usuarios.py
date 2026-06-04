@@ -1,3 +1,5 @@
+from conexion import Conexion
+
 class Usuarios:
     ROLES_DISPONIBLES = {
         1: "Jugador",
@@ -10,29 +12,114 @@ class Usuarios:
         self.id_usuario = userID
         self.correo = email
         self.contrasena = password
-        self.tipo_usuario = self.ROLES_DISPONIBLES.get(id_rol, "Invitado")
+        self.tipo_usuario = self.ROLES_DISPONIBLES.get(id_rol, "Jugador")
+        self.nuevo_rol = self.ROLES_DISPONIBLES
 
-    def cambiar_rol_por_id(self, id_rol):
-        if id_rol in self.ROLES_DISPONIBLES:
-            self.tipo_usuario = self.ROLES_DISPONIBLES[id_rol]
-            print(f"¡Rol de {self.usuario} actualizado con éxito a: {self.tipo_usuario}!")
-        else:
-            print("Error: El ID de rol introducido no es válido.")
+    @staticmethod
+    def listar():
+        """
+        Muestra todos los usuarios activos.
 
-    def mostrar_usuarios(self):
-        print(
-            f"Usuario: {self.usuario}\n"
-            f"ID: {self.id_usuario}\n"
-            f"E-mail: {self.correo}\n"
-            f"Rol: {self.tipo_usuario}"
-        )
+        Se utiliza un método estático porque
+        no necesitamos crear un objeto para
+        realizar una consulta general.
+        """
+        conexion = Conexion.conectar()
+        cursor = conexion.cursor()
 
-"""Datos de jugadores"""
-usuario1 = Usuarios("Benjamin", 1, "araelanabalon@liceovvh.cl", "Benja123", 1)
-usuario2 = Usuarios("Juan", 2, "juandonoso@liceovvh.cl", "Juan456", 1)
-usuario3 = Usuarios("Jonathan", 3, "jonathanalquinta@liceovvh.cl", "jonathan222", 2)
-usuario4 = Usuarios("Alexander", 4, "alexanderpino@liceovvh.cl", "ale566", 2)
-usuario5 = Usuarios("Luis", 5, "luisecheverria@liceovvh.cl", "Luis890", 3)
+        sql = """
+        SELECT
+            id_usuario,
+            nombre,
+            curso
+        FROM usuarios
+        WHERE deleted = 0
+        ORDER BY nombre ASC
+        """
+
+        cursor.execute(sql)
+        Usuarios = cursor.fetchall()
+        print("\n===== USUARIOS =====\n")
+        for usuario in Usuarios:
+            print(
+                f"ID: {usuario[0]} | "
+                f"Nombre: {usuario[1]} | "
+                f"Correo: {usuario[2]}"
+                f"Tipo de usuario: {usuario[4]}"
+            )
+
+        cursor.close()
+        conexion.close()
+
+
+
+    def agregar(self):
+         """
+        Inserta un nuevo usuario en
+        la base de datos utilizando los
+        atributos almacenados en el objeto.
+         """
+         conexion = conexion.conectar()
+         cursor = conexion.cursor()
+
+         sql = """
+            INSERT INTO usuarios
+            (
+                usuario,
+                id_usuario,
+                correo,
+                contrasena
+            )
+            VALUES
+            (
+                %s,
+                %s,
+                %s
+            )
+            """
+
+         valores = (
+            self.usuario,
+            self.id_usuario,
+            self.correo,
+            self.contrasena
+            )
+
+         cursor.execute(sql, valores)
+
+            # Guarda los cambios realizados
+         conexion.commit()
+         print("\nUsuario agregado correctamente.")
+         cursor.close()
+         conexion.close()
+
+
+
+    @staticmethod
+    def actualizar():
+        """
+        Permite modificar el rol
+        de un usuario.
+        """
+
+        id_usuario = input("Ingrese ID del usuario: ")
+        nuevo_rol = input("Ingrese nuevo rol: ")
+        conexion = conexion.conectar()
+        cursor = conexion.cursor()
+
+        sql = """
+        UPDATE usuarios
+        SET curso = %s
+        WHERE id_usuario = %s
+        """
+
+        valores = (nuevo_rol,id_usuario)
+        cursor.execute(sql, valores)
+        conexion.commit()
+        print("\nRol actualizado correctamente.")
+
+        cursor.close()
+        conexion.close()
 
 
 

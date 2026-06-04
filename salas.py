@@ -1,6 +1,6 @@
 from usuarios import usuario1, usuario2, usuario3, usuario4, usuario5
 
-class salas:
+class Salas:
     def __init__(self, id_salas, tamaño_sala, tipo_sala):
         self.id_salas = id_salas
         self.tamaño_sala = tamaño_sala
@@ -20,7 +20,7 @@ class salas:
         for usuario in self.usuarios:
             print(f"- {usuario.usuario}")
 
-sala1 = salas(1, 20, "Survival")
+sala1 = Salas(1, 20, "Survival")
 
 sala1.agregar_usuario(usuario1)
 sala1.agregar_usuario(usuario2)
