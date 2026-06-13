@@ -30,11 +30,12 @@ class Usuarios:
         sql = """
         SELECT
             id_usuario,
-            nombre,
-            curso
+            username,
+            email,
+            id_rol
         FROM usuarios
         WHERE deleted = 0
-        ORDER BY nombre ASC
+        ORDER BY username ASC
         """
 
         cursor.execute(sql)
@@ -45,7 +46,7 @@ class Usuarios:
                 f"ID: {usuario[0]} | "
                 f"Nombre: {usuario[1]} | "
                 f"Correo: {usuario[2]}"
-                f"Tipo de usuario: {usuario[4]}"
+                f"Tipo de usuario: {usuario[3]}"
             )
 
         cursor.close()
@@ -59,19 +60,22 @@ class Usuarios:
         la base de datos utilizando los
         atributos almacenados en el objeto.
          """
-         conexion = conexion.conectar()
+         conexion = Conexion.conectar()
          cursor = conexion.cursor()
 
          sql = """
             INSERT INTO usuarios
             (
-                usuario,
-                id_usuario,
-                correo,
-                contrasena
+                username,
+                email,
+                contrasena,
+                id_rol,
+                id_salas
             )
             VALUES
             (
+                %s,
+                %s,
                 %s,
                 %s,
                 %s
@@ -104,7 +108,7 @@ class Usuarios:
 
         id_usuario = input("Ingrese ID del usuario: ")
         nuevo_rol = input("Ingrese nuevo rol: ")
-        conexion = conexion.conectar()
+        conexion = Conexion.conectar()
         cursor = conexion.cursor()
 
         sql = """

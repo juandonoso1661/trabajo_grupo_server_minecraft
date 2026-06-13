@@ -13,7 +13,7 @@ class Conexion:
         """
 
         conexion = mysql.connector.connect(
-            host="172.16.50.236",
+            host="localhost",
             user="root",
             password="1234",
             database="pixelserver"
