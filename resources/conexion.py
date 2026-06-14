@@ -20,4 +20,3 @@ class Conexion:
         ) 
 
         return conexion
-    

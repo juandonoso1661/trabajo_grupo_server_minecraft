@@ -37,3 +37,42 @@ class Sanciones:
             f"Sanción: {self.tipo_sanciones}\n"
             f"Duración: {self.duracion}"
             )
+        
+
+# Importamos la clase Conexion para la base de datos
+from conexion import Conexion
+
+class Sanciones:
+    """
+    Representa la gestión de sanciones en el servidor de Minecraft.
+    """
+
+    @staticmethod
+    def ver_sanciones_usuario():
+        """
+        Muestra el historial de sanciones buscando por el username del jugador.
+        """
+        username_buscar = input("\nIngrese el Username del jugador a consultar sanciones: ").strip()
+        
+        conexion = Conexion.conectar()
+        cursor = conexion.cursor()
+
+        sql = """
+        SELECT u.username, s.tipo_sanciones, s.duracion, s.created_at
+        FROM sanciones s
+        INNER JOIN usuarios u ON s.id_usuario = u.id_usuario
+        WHERE u.username = %s AND s.deleted = 0 AND u.deleted = 0
+        ORDER BY s.created_at DESC
+        """
+        cursor.execute(sql, (username_buscar,))
+        resultados = cursor.fetchall()
+
+        print(f"\n===== HISTORIAL DE SANCIONES: {username_buscar.upper()} =====")
+        if not resultados:
+            print("El jugador no registra ninguna sanción activa en el sistema.")
+        else:
+            for fila in resultados:
+                print(f"Infracción: {fila[1]} | Duración: {fila[2]} | Aplicada el: {fila[3]}")
+
+        cursor.close()
+        conexion.close()
