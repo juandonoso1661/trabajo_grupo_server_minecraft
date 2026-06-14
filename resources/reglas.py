@@ -46,7 +46,7 @@ class Reglas:
         cursor.execute(sql)
         lista_reglas = cursor.fetchall()
 
-        print("\n===== 📜 REGLAS DEL SERVIDOR PIXELSERVER =====")
+        print("\n===== REGLAS DEL SERVIDOR PIXELSERVER =====")
         if not lista_reglas:
             print("No hay reglas registradas en el servidor actualmente.")
         else:

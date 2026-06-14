@@ -18,7 +18,7 @@ while True:
     print("5. Consultar sanciones de un usuario")
     print("6. Buscar salas por capacidad")
     print("7. Mostrar reglas de server")  # <- Añadimos la opción visual
-    print("10. Salir")
+    print("8. Salir")
     print("===================================")
 
     opcion = input("Selecciona una opción: ").strip()
@@ -71,11 +71,11 @@ while True:
     elif opcion == "7":
         Reglas.mostrar_reglas_server()
 
-    # 10. Salir
-    elif opcion == "10":
-        print("\n👋 ¡Saliendo del sistema del servidor! Buen viaje.")
+    # 8. Salir
+    elif opcion == "8":
+        print("\n ¡Saliendo del sistema del servidor! Buen viaje.")
         break
 
     # Validación general de opciones
     else:
-        print("\n❌ Opción no válida. Por favor, selecciona una opción correcta del menú.")
+        print("\n Opción no válida. Por favor, selecciona una opción correcta del menú.")
