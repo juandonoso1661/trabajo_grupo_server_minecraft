@@ -14,12 +14,6 @@ regla2 = Reglas(2, "NO INSULTOS EN EL CHAT", "convivencia")
 regla3 = Reglas(3, "NO SOBREEXPLOTAR MODS", "seguridad")
 regla4 = Reglas(4, "NO HACER SPAM", "chat")
 
-print("=== LISTA DE USUARIOS ===")
-regla1.mostrar_regla()
-regla2.mostrar_regla()
-regla3.mostrar_regla()
-regla4.mostrar_regla()
-
 # Importamos la clase Conexion para la base de datos
 from conexion import Conexion
 
