@@ -108,7 +108,7 @@ class Usuarios:
         conexion.close()
 
     # ===================================================
-    # 6. BUSCAR SALAS POR CAPACIDAD (BETWEEN)
+    # 6. BUSCAR SALAS POR CAPACIDAD
     # ===================================================
     @staticmethod
     def buscar_salas_por_capacidad():

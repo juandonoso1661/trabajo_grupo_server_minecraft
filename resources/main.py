@@ -17,8 +17,9 @@ while True:
     print("4. Ver lista de roles disponibles")
     print("5. Consultar sanciones de un usuario")
     print("6. Buscar salas por capacidad")
-    print("7. Mostrar reglas de server")  # <- Añadimos la opción visual
-    print("8. Salir")
+    print("7. Mostrar reglas de server")
+    print("8. Actualizar rol usuario")  
+    print("9. Salir")
     print("===================================")
 
     opcion = input("Selecciona una opción: ").strip()
@@ -71,8 +72,11 @@ while True:
     elif opcion == "7":
         Reglas.mostrar_reglas_server()
 
-    # 8. Salir
     elif opcion == "8":
+        Usuarios.actualizar()
+
+    # 9. Salir
+    elif opcion == "9":
         print("\n ¡Saliendo del sistema del servidor! Buen viaje.")
         break
 
