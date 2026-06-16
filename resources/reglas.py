@@ -25,22 +25,20 @@ class Reglas:
     @staticmethod
     def mostrar_reglas_server():
         """
-        Muestra todas las reglas activas del servidor detallando 
-        el tipo de regla y la sala a la que aplica.
+        Muestra todas las reglas activas del servidor de forma general.
         """
         conexion = Conexion.conectar()
         cursor = conexion.cursor()
 
+        # Limpiamos el SQL para traer solo datos de la tabla reglas
         sql = """
         SELECT 
-            r.id_reglas,
-            r.nombre_reglas,
-            r.tipo_reglas,
-            r.id_salas
-        FROM reglas r
-        INNER JOIN salas s ON r.id_salas = s.id_salas
-        WHERE r.deleted = 0 AND s.deleted = 0
-        ORDER BY r.id_reglas ASC
+            id_reglas,
+            nombre_reglas,
+            tipo_reglas
+        FROM reglas
+        WHERE deleted = 0
+        ORDER BY id_reglas ASC
         """
 
         cursor.execute(sql)
@@ -54,10 +52,8 @@ class Reglas:
                 print(
                     f"ID: {regla[0]} | "
                     f"Norma: {regla[1]} | "
-                    f"Categoría: {regla[2]} | "
-                    f"Aplica en Sala: {regla[3]}"
+                    f"Categoría: {regla[2]}"
                 )
         
         cursor.close()
         conexion.close()
-

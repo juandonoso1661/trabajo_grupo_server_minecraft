@@ -78,11 +78,18 @@ class Usuarios:
     def agregar(self):
         conexion = Conexion.conectar()
         cursor = conexion.cursor()
+    
+        # El SQL se queda igual, ya que MySQL aceptará NULL en id_salas si la columna lo permite
         sql = """
         INSERT INTO usuarios (username, email, contrasena, id_rol, id_salas, created_by) 
         VALUES (%s, %s, %s, %s, %s, %s)
         """
-        valores = (self.username, self.email, self.password, self.id_rol, self.id_salas, self.created_by)
+    
+        # Si self.id_salas no se capturó o viene vacío, nos aseguramos de que sea None
+        id_sala_final = self.id_salas if self.id_salas else None
+
+        valores = (self.username, self.email, self.password, self.id_rol, id_sala_final, self.created_by)
+    
         cursor.execute(sql, valores)
         conexion.commit()
         print(f"\nUsuario '{self.username}' agregado correctamente.")
