@@ -1,7 +1,7 @@
-# Importamos las clases desde sus respectivos archivos independientes
+
 from usuarios import Usuarios
 from sanciones import Sanciones
-from reglas import Reglas  # <- Agregamos la importación del nuevo archivo
+from reglas import Reglas  
 
 # =====================================
 # MENÚ PRINCIPAL

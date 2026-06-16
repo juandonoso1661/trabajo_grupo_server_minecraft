@@ -14,7 +14,7 @@ regla2 = Reglas(2, "NO INSULTOS EN EL CHAT", "convivencia")
 regla3 = Reglas(3, "NO SOBREEXPLOTAR MODS", "seguridad")
 regla4 = Reglas(4, "NO HACER SPAM", "chat")
 
-# Importamos la clase Conexion para la base de datos
+
 from conexion import Conexion
 
 class Reglas:
@@ -30,7 +30,7 @@ class Reglas:
         conexion = Conexion.conectar()
         cursor = conexion.cursor()
 
-        # Limpiamos el SQL para traer solo datos de la tabla reglas
+        
         sql = """
         SELECT 
             id_reglas,

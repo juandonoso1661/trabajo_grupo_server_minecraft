@@ -1,4 +1,4 @@
-# Importamos el conector MySQL
+
 import mysql.connector
 
 

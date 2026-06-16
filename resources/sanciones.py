@@ -39,7 +39,7 @@ class Sanciones:
             )
         
 
-# Importamos la clase Conexion para la base de datos
+
 from conexion import Conexion
 
 class Sanciones:
@@ -82,7 +82,7 @@ class Sanciones:
         print("       APLICAR NUEVA SANCIÓN       ")
         print("===================================")
         
-        # 1. Importamos localmente Usuarios para mostrar la lista y evitar importación circular
+        
         from usuarios import Usuarios
         print("Selecciona el ID del usuario al que deseas sancionar:")
         Usuarios.ver_usuarios_detallados()
@@ -92,7 +92,7 @@ class Sanciones:
             print("Operación cancelada. El ID de usuario es obligatorio.")
             return
 
-        # 2. Menú para elegir el tipo de sanción basándonos en tus INSERTS de SQL
+        
         print("\n--- TIPOS DE SANCIONES DISPONIBLES ---")
         print("1. Baneo de chat")
         print("2. Advertencia")
@@ -100,7 +100,7 @@ class Sanciones:
         print("4. Baneo permanente")
         opc_sancion = input("Seleccione el número de sanción a aplicar: ").strip()
 
-        # Mapeamos la opción del menú al texto real que irá a la base de datos
+        
         tipo_sancion = ""
         if opc_sancion == "1":
             tipo_sancion = "baneo de chat"
@@ -114,13 +114,12 @@ class Sanciones:
             print("[Error] Opción de sanción no válida. Operación cancelada.")
             return
 
-        # 3. Solicitar la duración de la sanción (Formato TIME de SQL: HH:MM:SS)
-        # Nota: Si es permanente, puedes dejarlo en 00:00:00 o lo que gustes
+        
         duracion = input("Ingrese la duración (Ejemplo: 02:00:00 para 2 horas, o presione Enter para dejar vacío): ").strip()
         if duracion == "":
             duracion = None
 
-        # 4. Guardar el registro en la Base de Datos
+        
         try:
             import mysql.connector
             conexion = mysql.connector.connect(
@@ -131,7 +130,7 @@ class Sanciones:
             )
             cursor = conexion.cursor()
 
-            # Sentencia SQL usando las columnas exactas de tu tabla 'sanciones'
+            
             sql = """
                 INSERT INTO sanciones (tipo_sanciones, duracion, id_usuario, created_by) 
                 VALUES (%s, %s, %s, %s)
@@ -139,7 +138,7 @@ class Sanciones:
             valores = (tipo_sancion, duracion, id_usuario, "Consola_Admin")
             
             cursor.execute(sql, valores)
-            conexion.commit() # Confirmamos la inserción
+            conexion.commit() 
             
             print(f"\n[Éxito] Sanción de '{tipo_sancion}' aplicada correctamente al usuario con ID {id_usuario}.")
             

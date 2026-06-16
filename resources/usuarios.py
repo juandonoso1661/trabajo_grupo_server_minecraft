@@ -20,7 +20,7 @@ class Usuarios:
         conexion = Conexion.conectar()
         cursor = conexion.cursor()
         
-        # Mantenemos el orden: los antiguos arriba, los nuevos abajo
+        
         sql = """
         SELECT u.id_usuario, u.username, u.email, IFNULL(r.tipo_rol, 'Sin Rol') AS rol
         FROM usuarios u LEFT JOIN rol r ON u.id_rol = r.id_rol
@@ -32,14 +32,14 @@ class Usuarios:
         
         print("\n===== JUGADORES DEL SERVIDOR =====")
         
-        # Creamos un contador que empieza en 1
+       
         contador = 1
         
         for usuario in lista_usuarios:
-            # Imprimimos el número de la lista (contador) al principio de la línea
+            
             print(f"{contador}.ID: {usuario[0]} | Usuario: {usuario[1]} | Correo: {usuario[2]} | Rol: {usuario[3]}")
             
-            # Sumamos 1 para el siguiente usuario
+            
             contador += 1
             
         cursor.close()
@@ -91,13 +91,11 @@ class Usuarios:
         conexion = Conexion.conectar()
         cursor = conexion.cursor()
     
-        # El SQL se queda igual, ya que MySQL aceptará NULL en id_salas si la columna lo permite
         sql = """
         INSERT INTO usuarios (username, email, contraseña, id_rol, id_salas, created_by) 
         VALUES (%s, %s, %s, %s, %s, %s)
         """
-    
-        # Si self.id_salas no se capturó o viene vacío, nos aseguramos de que sea None
+
         id_sala_final = self.id_salas if self.id_salas else None
 
         valores = (self.username, self.email, self.password, self.id_rol, id_sala_final, self.created_by)
@@ -170,7 +168,7 @@ class Usuarios:
         conexion = Conexion.conectar()
         cursor = conexion.cursor()
         
-        # 1. Alerta de diagnóstico: Ver qué columnas existen realmente
+        
         try:
             cursor.execute("DESCRIBE usuarios")
             columnas_reales = [fila[0] for fila in cursor.fetchall()]
@@ -178,7 +176,7 @@ class Usuarios:
         except Exception as e:
             print(f"[DIAGNÓSTICO] No se pudo leer la estructura: {e}")
 
-        # 2. Verificar si el usuario existe
+        
         sql_buscar = "SELECT username, email, id_rol, id_salas FROM usuarios WHERE id_usuario = %s AND deleted = 0"
         cursor.execute(sql_buscar, (id_usuario,))
         usuario_actual = cursor.fetchone()
@@ -202,7 +200,7 @@ class Usuarios:
         nuevo_rol = input(f"Nuevo ID de Rol [{id_rol_act}]: ").strip()
         nuevo_sala = input(f"Nuevo ID de Sala [{id_sala_act}] (Escribe 'NULL' para quitar): ").strip()
 
-        # 3. Asignar valores finales
+        
         final_username = nuevo_username if nuevo_username != "" else username_act
         final_email = nuevo_email if nuevo_email != "" else email_act
         final_rol = nuevo_rol if nuevo_rol != "" else id_rol_act
@@ -214,12 +212,10 @@ class Usuarios:
         else:
             final_sala = nuevo_sala
 
-        # 4. Aquí es donde determinamos el nombre de la columna de contraseña usando el diagnóstico
-        # Si 'contraseña' con Ñ está en tu BD, usamos esa. Si no, usamos 'contrasena'.
+        
         nombre_columna_password = "contraseña" if "contraseña" in columnas_reales else "contrasena"
 
         if nueva_contra != "":
-            # Construcción dinámica con el nombre real de tu columna
             sql_update = f"""
             UPDATE usuarios 
             SET username = %s, email = %s, {nombre_columna_password} = %s, id_rol = %s, id_salas = %s 
@@ -234,7 +230,7 @@ class Usuarios:
             """
             valores = (final_username, final_email, final_rol, final_sala, id_usuario)
 
-        # 5. Ejecutar
+        
         try:
             cursor.execute(sql_update, valores)
             conexion.commit()
@@ -272,7 +268,6 @@ class Usuarios:
                 )
                 cursor = conexion.cursor()
                 
-                # REVISIÓN CRUCIAL: Aquí usamos id_usuario, que coincide exactamente con tu tabla SQL
                 sql = "UPDATE usuarios SET deleted = 1, update_by = 'Consola_Admin' WHERE id_usuario = %s AND deleted = 0"
                 cursor.execute(sql, (id_user,))
                 
