@@ -10,6 +10,7 @@ class Salas:
     def agregar_usuario(self, usuario):
         self.usuarios.append(usuario)
 
+<<<<<<< HEAD
     def mostrar_salas(self):
         print(f"Sala ID: {self.id_salas}\n"
               f"Tamaño sala: {self.tamaño_sala}\n"
@@ -29,4 +30,7 @@ sala1.agregar_usuario(usuario4)
 sala1.agregar_usuario(usuario5)
 
 sala1.mostrar_salas()
+=======
+
+>>>>>>> 92af4d6e4985f12578f2b8869cabc6f81211b3e9
 

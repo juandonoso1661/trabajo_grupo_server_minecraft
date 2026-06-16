@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from resources.conexion import Conexion
+=======
+from conexion import Conexion
+>>>>>>> 92af4d6e4985f12578f2b8869cabc6f81211b3e9
 
 class Usuarios:
     """
@@ -79,7 +83,11 @@ class Usuarios:
         conexion = Conexion.conectar()
         cursor = conexion.cursor()
         sql = """
+<<<<<<< HEAD
         INSERT INTO usuarios (username, email, contraseña, id_rol, id_salas, created_by) 
+=======
+        INSERT INTO usuarios (username, email, contrasena, id_rol, id_salas, created_by) 
+>>>>>>> 92af4d6e4985f12578f2b8869cabc6f81211b3e9
         VALUES (%s, %s, %s, %s, %s, %s)
         """
         valores = (self.username, self.email, self.password, self.id_rol, self.id_salas, self.created_by)
@@ -108,7 +116,11 @@ class Usuarios:
         conexion.close()
 
     # ===================================================
+<<<<<<< HEAD
     # 6. BUSCAR SALAS POR CAPACIDAD (BETWEEN)
+=======
+    # 6. BUSCAR SALAS POR CAPACIDAD
+>>>>>>> 92af4d6e4985f12578f2b8869cabc6f81211b3e9
     # ===================================================
     @staticmethod
     def buscar_salas_por_capacidad():
@@ -135,4 +147,11 @@ class Usuarios:
                 print(f"Sala ID: {fila[0]} | Espacio Máximo: {fila[1]} jugadores")
 
         cursor.close()
+<<<<<<< HEAD
         conexion.close()
+=======
+        conexion.close()
+
+
+
+>>>>>>> 92af4d6e4985f12578f2b8869cabc6f81211b3e9
