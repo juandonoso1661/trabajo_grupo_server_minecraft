@@ -18,8 +18,10 @@ while True:
     print("5. Consultar sanciones de un usuario")
     print("6. Buscar salas por capacidad")
     print("7. Mostrar reglas de server")
-    print("8. Actualizar rol usuario")  
-    print("9. Salir")
+    print("8. Modificar usuario por completo")
+    print("9. Eliminar usuario de forma permanente")
+    print("10. Aplicar sanción a un usuario")
+    print("0. Salir")
     print("===================================")
 
     opcion = input("Selecciona una opción: ").strip()
@@ -68,15 +70,24 @@ while True:
     elif opcion == "6":
         Usuarios.buscar_salas_por_capacidad()
 
-    # 7. Mostrar reglas del servidor (Desde su nuevo archivo independiente)
+    # 7. Mostrar reglas del servidor
     elif opcion == "7":
         Reglas.mostrar_reglas_server()
 
+    # 8. Modificar usuario
     elif opcion == "8":
         Usuarios.actualizar()
 
-    # 9. Salir
+    # 9. Eliminar usuario 
     elif opcion == "9":
+        Usuarios.eliminar()
+
+    # 10. Aplicar Sanción 
+    elif opcion == "10":
+        Sanciones.agregar_sancion()
+
+    # 0. Salir
+    elif opcion == "0":
         print("\n ¡Saliendo del sistema del servidor! Buen viaje.")
         break
 

@@ -12,24 +12,36 @@ class Usuarios:
         self.id_rol = id_rol
         self.id_salas = id_salas
         self.created_by = created_by
-
     # ===================================================
-    # 1. LISTAR JUGADORES (Opción 1 del Menú)
+    # 1. LISTAR JUGADORES (Con contador del 1 al total)
     # ===================================================
     @staticmethod
     def listar():
         conexion = Conexion.conectar()
         cursor = conexion.cursor()
+        
+        # Mantenemos el orden: los antiguos arriba, los nuevos abajo
         sql = """
         SELECT u.id_usuario, u.username, u.email, IFNULL(r.tipo_rol, 'Sin Rol') AS rol
         FROM usuarios u LEFT JOIN rol r ON u.id_rol = r.id_rol
-        WHERE u.deleted = 0 ORDER BY u.username ASC
+        WHERE u.deleted = 0 
+        ORDER BY u.id_usuario ASC
         """
         cursor.execute(sql)
         lista_usuarios = cursor.fetchall()
-        print("\n===== JUGADORES DEL SERVIDOR =====\n")
+        
+        print("\n===== JUGADORES DEL SERVIDOR =====")
+        
+        # Creamos un contador que empieza en 1
+        contador = 1
+        
         for usuario in lista_usuarios:
-            print(f"ID: {usuario[0]} | Usuario: {usuario[1]} | Correo: {usuario[2]} | Rol: {usuario[3]}")
+            # Imprimimos el número de la lista (contador) al principio de la línea
+            print(f"{contador}.ID: {usuario[0]} | Usuario: {usuario[1]} | Correo: {usuario[2]} | Rol: {usuario[3]}")
+            
+            # Sumamos 1 para el siguiente usuario
+            contador += 1
+            
         cursor.close()
         conexion.close()
 
@@ -81,7 +93,7 @@ class Usuarios:
     
         # El SQL se queda igual, ya que MySQL aceptará NULL en id_salas si la columna lo permite
         sql = """
-        INSERT INTO usuarios (username, email, contrasena, id_rol, id_salas, created_by) 
+        INSERT INTO usuarios (username, email, contraseña, id_rol, id_salas, created_by) 
         VALUES (%s, %s, %s, %s, %s, %s)
         """
     
@@ -144,5 +156,136 @@ class Usuarios:
         cursor.close()
         conexion.close()
 
+# ===================================================
+    # MODIFICAR USUARIO (Campos Dinámicos)
+    # ===================================================
+    # ===================================================
+    # MODIFICAR USUARIO (Versión de Diagnóstico)
+    # ===================================================
+    @staticmethod
+    def actualizar():
+        print("\n--- MODIFICAR DATOS DE JUGADOR ---")
+        id_usuario = input("Ingrese ID del usuario a modificar: ").strip()
+        
+        conexion = Conexion.conectar()
+        cursor = conexion.cursor()
+        
+        # 1. Alerta de diagnóstico: Ver qué columnas existen realmente
+        try:
+            cursor.execute("DESCRIBE usuarios")
+            columnas_reales = [fila[0] for fila in cursor.fetchall()]
+            print(f"\n[DIAGNÓSTICO] Columnas encontradas en tu BD: {columnas_reales}")
+        except Exception as e:
+            print(f"[DIAGNÓSTICO] No se pudo leer la estructura: {e}")
 
+        # 2. Verificar si el usuario existe
+        sql_buscar = "SELECT username, email, id_rol, id_salas FROM usuarios WHERE id_usuario = %s AND deleted = 0"
+        cursor.execute(sql_buscar, (id_usuario,))
+        usuario_actual = cursor.fetchone()
+        
+        if not usuario_actual:
+            print("\n[Error] No se encontró ningún usuario activo con ese ID.")
+            cursor.close()
+            conexion.close()
+            return
 
+        username_act, email_act, id_rol_act, id_sala_act = usuario_actual
+        
+        print(f"\nDatos actuales -> Username: {username_act} | Email: {email_act}")
+        print("(Presione [Enter] para mantener el valor actual)\n")
+        
+        nuevo_username = input(f"Nuevo Username [{username_act}]: ").strip()
+        nuevo_email = input(f"Nuevo Correo [{email_act}]: ").strip()
+        nueva_contra = input("Nueva Contraseña [Omitir]: ").strip()
+        
+        Usuarios.listar_roles()
+        nuevo_rol = input(f"Nuevo ID de Rol [{id_rol_act}]: ").strip()
+        nuevo_sala = input(f"Nuevo ID de Sala [{id_sala_act}] (Escribe 'NULL' para quitar): ").strip()
+
+        # 3. Asignar valores finales
+        final_username = nuevo_username if nuevo_username != "" else username_act
+        final_email = nuevo_email if nuevo_email != "" else email_act
+        final_rol = nuevo_rol if nuevo_rol != "" else id_rol_act
+        
+        if nuevo_sala == "":
+            final_sala = id_sala_act
+        elif nuevo_sala.upper() == "NULL":
+            final_sala = None
+        else:
+            final_sala = nuevo_sala
+
+        # 4. Aquí es donde determinamos el nombre de la columna de contraseña usando el diagnóstico
+        # Si 'contraseña' con Ñ está en tu BD, usamos esa. Si no, usamos 'contrasena'.
+        nombre_columna_password = "contraseña" if "contraseña" in columnas_reales else "contrasena"
+
+        if nueva_contra != "":
+            # Construcción dinámica con el nombre real de tu columna
+            sql_update = f"""
+            UPDATE usuarios 
+            SET username = %s, email = %s, {nombre_columna_password} = %s, id_rol = %s, id_salas = %s 
+            WHERE id_usuario = %s
+            """
+            valores = (final_username, final_email, nueva_contra, final_rol, final_sala, id_usuario)
+        else:
+            sql_update = """
+            UPDATE usuarios 
+            SET username = %s, email = %s, id_rol = %s, id_salas = %s 
+            WHERE id_usuario = %s
+            """
+            valores = (final_username, final_email, final_rol, final_sala, id_usuario)
+
+        # 5. Ejecutar
+        try:
+            cursor.execute(sql_update, valores)
+            conexion.commit()
+            print(f"\n ¡Usuario con ID {id_usuario} actualizado correctamente!")
+        except Exception as e:
+            print(f"\n[Error] No se pudo actualizar el usuario: {e}")
+            conexion.rollback()
+        finally:
+            cursor.close()
+            conexion.close()
+    @classmethod
+    def eliminar(cls):
+        print("\n===================================")
+        print("        ELIMINAR JUGADOR           ")
+        print("===================================")
+        
+        cls.ver_usuarios_detallados()
+        
+        id_user = input("\nIngrese el ID del usuario que desea eliminar (id_usuario): ").strip()
+        
+        if not id_user:
+            print("Operación cancelada. El ID no puede estar vacío.")
+            return
+
+        confirmacion = input(f"¿Está seguro de que desea eliminar al usuario con ID {id_user}? (s/n): ").strip().lower()
+        
+        if confirmacion == 's':
+            try:
+                import mysql.connector 
+                conexion = mysql.connector.connect(
+                    host="localhost",
+                    user="root",        
+                    password="1234",
+                    database="pixelserver"
+                )
+                cursor = conexion.cursor()
+                
+                # REVISIÓN CRUCIAL: Aquí usamos id_usuario, que coincide exactamente con tu tabla SQL
+                sql = "UPDATE usuarios SET deleted = 1, update_by = 'Consola_Admin' WHERE id_usuario = %s AND deleted = 0"
+                cursor.execute(sql, (id_user,))
+                
+                if cursor.rowcount > 0:
+                    conexion.commit()  
+                    print(f"\n[Éxito] El usuario con ID {id_user} ha sido eliminado correctamente del sistema.")
+                else:
+                    print(f"\n[Aviso] No se encontró ningún usuario activo con el ID {id_user}.")
+                
+                cursor.close()
+                conexion.close()
+                
+            except Exception as e:
+                print(f"\n[Error] No se pudo procesar la eliminación: {e}")
+        else:
+            print("\nOperación cancelada. El usuario no sufrió cambios.")
