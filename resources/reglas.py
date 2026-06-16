@@ -14,19 +14,8 @@ regla2 = Reglas(2, "NO INSULTOS EN EL CHAT", "convivencia")
 regla3 = Reglas(3, "NO SOBREEXPLOTAR MODS", "seguridad")
 regla4 = Reglas(4, "NO HACER SPAM", "chat")
 
-<<<<<<< HEAD
-print("=== LISTA DE USUARIOS ===")
-regla1.mostrar_regla()
-regla2.mostrar_regla()
-regla3.mostrar_regla()
-regla4.mostrar_regla()
-
-# Importamos la clase Conexion para la base de datos
-from resources.conexion import Conexion
-=======
 # Importamos la clase Conexion para la base de datos
 from conexion import Conexion
->>>>>>> 92af4d6e4985f12578f2b8869cabc6f81211b3e9
 
 class Reglas:
     """
@@ -57,11 +46,7 @@ class Reglas:
         cursor.execute(sql)
         lista_reglas = cursor.fetchall()
 
-<<<<<<< HEAD
-        print("\n===== 📜 REGLAS DEL SERVIDOR PIXELSERVER =====")
-=======
         print("\n===== REGLAS DEL SERVIDOR PIXELSERVER =====")
->>>>>>> 92af4d6e4985f12578f2b8869cabc6f81211b3e9
         if not lista_reglas:
             print("No hay reglas registradas en el servidor actualmente.")
         else:
@@ -74,9 +59,5 @@ class Reglas:
                 )
         
         cursor.close()
-<<<<<<< HEAD
-        conexion.close()
-=======
         conexion.close()
 
->>>>>>> 92af4d6e4985f12578f2b8869cabc6f81211b3e9

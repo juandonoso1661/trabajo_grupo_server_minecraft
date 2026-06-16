@@ -40,11 +40,7 @@ class Sanciones:
         
 
 # Importamos la clase Conexion para la base de datos
-<<<<<<< HEAD
-from resources.conexion import Conexion
-=======
 from conexion import Conexion
->>>>>>> 92af4d6e4985f12578f2b8869cabc6f81211b3e9
 
 class Sanciones:
     """

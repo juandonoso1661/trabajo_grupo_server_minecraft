@@ -10,27 +10,4 @@ class Salas:
     def agregar_usuario(self, usuario):
         self.usuarios.append(usuario)
 
-<<<<<<< HEAD
-    def mostrar_salas(self):
-        print(f"Sala ID: {self.id_salas}\n"
-              f"Tamaño sala: {self.tamaño_sala}\n"
-              f"Tipo: {self.tipo_sala}" 
-              )
-        
-        print("Usuarios conectados:")
-        for usuario in self.usuarios:
-            print(f"- {usuario.usuario}")
-
-sala1 = Salas(1, 20, "Survival")
-
-sala1.agregar_usuario(usuario1)
-sala1.agregar_usuario(usuario2)
-sala1.agregar_usuario(usuario3)
-sala1.agregar_usuario(usuario4)
-sala1.agregar_usuario(usuario5)
-
-sala1.mostrar_salas()
-=======
-
->>>>>>> 92af4d6e4985f12578f2b8869cabc6f81211b3e9
 
