@@ -19,4 +19,4 @@ class Conexion:
             database="pixelserver"
         ) 
 
-        return conexion
+        return conexion 
